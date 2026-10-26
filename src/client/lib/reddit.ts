@@ -1,4 +1,5 @@
 // Input cleanup and helpers
+// Reddit API client (item 1)
 import type { Post, PostsResponse } from '../../shared/reddit';
 
 const SUBREDDIT = /^[A-Za-z0-9_]{2,21}$/;
@@ -45,7 +46,7 @@ const parseListing = (json: unknown): Post[] => {
             continue;
         }
 
-        const childData = chiild.data;
+        const childData = child.data;
         if(
             typeof childData.id === 'string' &&
             typeof childData.title === 'string' &&
@@ -75,7 +76,7 @@ const parsePostsResponse = (json: unknown): Post[] => {
         throw new Error('Unexpected response from server');
     }
 
-    const wrapped: PostResponse = { posts: [] };
+    const wrapped: PostsResponse = { posts: [] };
 
     for (const currentPost of json.posts) {
         if (
@@ -154,12 +155,12 @@ export const fetchHotPosts = (subreddit: string): Promise<Post[]> =>
     request(
         `https://www.reddit.com/r/${subreddit}/hot.json?limit=10&raw_json=1`,
         `/api/hot?subreddit=${encodeURIComponent(subreddit)}`,
-        praseListing    
+        parseListing    
     );
 
 
 
-export const fetchPostsByIds = async (ids: string): Promise<Post[]> => { 
+export const fetchPostsByIds = async (ids: string[]): Promise<Post[]> => { 
     if(ids.length === 0)
     {
         return [];
@@ -168,9 +169,9 @@ export const fetchPostsByIds = async (ids: string): Promise<Post[]> => {
     const fullnames = ids.map((id) => `t3_${id}`).join(',');
 
     return request(
-        `https://www.reddit.com/api/info.json?id=${fullname}&raw_json=1`,
+        `https://www.reddit.com/api/info.json?id=${fullnames}&raw_json=1`,
         `/api/hot?subreddit=${encodeURIComponent(ids.join(','))}`,
-        praseListing    
+        parseListing    
     );
 };
 
