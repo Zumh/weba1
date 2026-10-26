@@ -1,3 +1,4 @@
+// Input cleanup and helpers
 import type { Post, PostsResponse } from '../../shared/reddit';
 
 const SUBREDDIT = /^[A-Za-z0-9_]{2,21}$/;
@@ -22,6 +23,7 @@ const isRecord = (v: unknown): v is Record<string, unknown> =>
 
 
 /**
+ * Parsing Reddit’s JSON safely
 This function check each level is an object,
 then pulls the five fields we need. Anything malformed is skipped
 instead of crashing the app. 
@@ -66,3 +68,36 @@ const parseListing = (json: unknown): Post[] => {
 };
 
 
+// Parsing the Devvit proxy response
+
+const parsePostsResponse = (json: unknown): Post[] => {
+    if(!isRecord(json) || !Array.isArray(json.posts)) {
+        throw new Error('Unexpected response from server');
+    }
+
+    const wrapped: PostResponse = { posts: [] };
+
+    for (const currentPost of json.posts) {
+        if (
+            isRecord(currentPost) && 
+            typeof currentPost.id === 'string' &&
+            typeof currentPost.title === 'string' &&
+            typeof currentPost.score === 'number' &&
+            typeof currentPost.subreddit === 'string' &&
+            typeof currentPost.permalink === 'string' 
+        ) {
+            wrapped.posts.push({
+                id: currentPost.id,
+                title: currentPost.title,
+                score: currentPost.score,
+                subreddit: currentPost.subreddit,
+                permalink: currentPost.permalink,
+            });
+
+
+        }
+
+    }
+
+    return wrapped.posts;
+};
