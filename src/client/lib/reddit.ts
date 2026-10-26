@@ -149,3 +149,29 @@ const request = async (
     return parsePostsResponse(await getJson(proxy));
 };
 
+// The two public functions
+export const fetchHotPosts = (subreddit: string): Promise<Post[]> => 
+    request(
+        `https://www.reddit.com/r/${subreddit}/hot.json?limit=10&raw_json=1`,
+        `/api/hot?subreddit=${encodeURIComponent(subreddit)}`,
+        praseListing    
+    );
+
+
+
+export const fetchPostsByIds = async (ids: string): Promise<Post[]> => { 
+    if(ids.length === 0)
+    {
+        return [];
+    }
+
+    const fullnames = ids.map((id) => `t3_${id}`).join(',');
+
+    return request(
+        `https://www.reddit.com/api/info.json?id=${fullname}&raw_json=1`,
+        `/api/hot?subreddit=${encodeURIComponent(ids.join(','))}`,
+        praseListing    
+    );
+};
+
+
