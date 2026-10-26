@@ -101,3 +101,28 @@ const parsePostsResponse = (json: unknown): Post[] => {
 
     return wrapped.posts;
 };
+
+// Fetching with good errors 
+
+const getJson = async (url: string): Promise<unknown> => {
+    const res = await fetch(url);
+    if(res.status == 404)
+    {
+        throw new Error('Subreddit not found');
+    }
+    if(res.status == 403)
+    {
+        throw new Error('That subreddit is private or banned');
+    }
+    if(res.status == 429)
+    {
+        throw new Error('Reddit is rate limiting - try again shortly');
+    }
+    if(!res.ok)
+    {
+        throw new Error(`Request failed (HTTP ${res.status})`);
+    }
+
+    const json: unknown = await res.json();
+    return json;
+}
