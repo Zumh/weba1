@@ -126,3 +126,26 @@ const getJson = async (url: string): Promise<unknown> => {
     const json: unknown = await res.json();
     return json;
 }
+
+// Direct first, Devvit fallback
+
+const request = async (
+    direct: string,
+    proxy: string,
+    parse: (json: unknown) => Post[]
+
+): Promise<Post[]> => {
+    if (mode === 'direct'){
+        try {
+            return parse(await getJson(direct));
+        } catch (err) {
+            if(!(err instanceof TypeError)) {
+                // real HTTP/parser error
+                throw err;
+            }
+            mode = 'devvit';
+        }
+    }
+    return parsePostsResponse(await getJson(proxy));
+};
+
