@@ -82,4 +82,67 @@ export const App = () => {
     };
 
     const byId = new Map(favPosts.map((recentPost) => [recentPost.id, recentPost]));
+
+      return (
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <main className="mx-auto grid max-w-6xl gap-8 p-4 md:grid-cols-2">
+        <section aria-labelledby="browse">
+          <h1 id="browse" className="mb-3 text-2xl font-bold">
+            Browse a subreddit
+          </h1>
+          <form onSubmit={search} className="mb-4 flex gap-2">
+            <label className="sr-only" htmlFor="subreddit">
+              Subreddit name
+            </label>
+            <input
+              id="subreddit"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="e.g. reactjs"
+              autoComplete="off"
+              className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-gray-800"
+            />
+            <button
+              type="submit"
+              className="cursor-pointer rounded-lg bg-[#d93900] px-4 py-2 text-white hover:bg-[#c23300] dark:bg-orange-600 dark:hover:bg-orange-700"
+            >
+              Show hot posts
+            </button>
+          </form>
+
+          {listing.status === 'idle' && (
+            <p className="text-gray-500 dark:text-gray-400">
+              Type a subreddit to see its top 10 hot posts.
+            </p>
+          )}
+          {listing.status === 'loading' && (
+            <p role="status">Loading r/{listing.subreddit}…</p>
+          )}
+          {listing.status === 'error' && (
+            <p role="alert" className="text-red-600 dark:text-red-400">
+              {listing.message}
+            </p>
+          )}
+          {listing.status === 'ready' && (
+            <>
+              <h2 className="mb-2 text-lg font-semibold">
+                Hot in r/{listing.subreddit}
+              </h2>
+              {listing.posts.length === 0 ? (
+                <p>No posts found.</p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {listing.posts.map((post) => (
+                    <PostRow
+                      key={post.id}
+                      post={post}
+                      isFavourite={favIds.includes(post.id)}
+                      onToggle={toggleFavourite}
+                    />
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </section>
 }
