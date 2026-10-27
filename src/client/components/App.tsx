@@ -1,7 +1,8 @@
+// Imports, types and state
 import { useEffect, useState } from "react";    
 import type { SubmitEvent } from 'react' ;
 import type { Post } from '../../shared/reddit' ;
-import type { fetchHotPosts, fetchPostsByIds, normaliseSubreddit } from '../lib/reddit' ;
+import { fetchHotPosts, fetchPostsByIds, normaliseSubreddit } from '../lib/reddit' ;
 import type { loadFavouriteIds, saveFavouriteIds } from '../lib/storage' ;
 import type { PostRow } from './PostRow' ;
 
@@ -19,6 +20,7 @@ export const App = () => {
     const [favError, setFavError] = useState<string | null>(null);
 
 
+    // Loading favourites’ details
     useEffect(() => {
 
         let cancelled = false;
@@ -45,4 +47,27 @@ export const App = () => {
         };
 
     }, [favIds]);
+
+    // Searching 
+    const search = (e: SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const subreddit = normaliseSubreddit(input);
+        if(!subreddit){
+            setListing({
+                status: 'error',
+                message: 'Enter a valid subreddit name, e.g. reactjs',
+            });
+            return;
+        }
+
+        setListing({ status: 'loading', subreddit });
+        fetchHotPosts(subreddit)
+        .then((posts) => setListing({ status: 'ready', subreddit, posts }))
+        .catch((err: unknown) =>
+            setListing({
+                    status: 'error',
+                    message: err instanceof Error ? err.message : 'Something went wrong',
+            })
+        );
+    };
 }
