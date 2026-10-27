@@ -18,5 +18,31 @@ export const App = () => {
     const [favPosts, setFavPosts] = useState<Post[]>([]);
     const [favError, setFavError] = useState<string | null>(null);
 
-    
+
+    useEffect(() => {
+
+        let cancelled = false;
+        fetchPostsByIds(favIds)
+        .then((posts) => {
+            if (cancelled) {
+                return;
+
+            }
+
+            setFavPosts(posts);
+            setFavError(null);
+        })
+        .catch((err: unkown) => {
+            if(cancelled){
+                return;
+            }
+
+            setFavError(err instanceof Error ? err.message : 'Could not load favourites');
+        });
+
+        return () => {
+            cancelled = true;
+        };
+
+    }, [favIds]);
 }
