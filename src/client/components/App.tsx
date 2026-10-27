@@ -145,4 +145,50 @@ export const App = () => {
             </>
           )}
         </section>
-}
+                <section aria-labelledby="favs">
+          <h2 id="favs" className="mb-3 text-2xl font-bold">
+            Your favourites ({favIds.length})
+          </h2>
+          {favError && (
+            <p role="alert" className="mb-2 text-red-600 dark:text-red-400">
+              {favError}
+            </p>
+          )}
+          {favIds.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400">
+              No favourites yet. Press ☆ Favourite on a post to add it.
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {favIds.map((id) => {
+                const post = byId.get(id);
+                return post ? (
+                  <PostRow
+                    key={id}
+                    post={post}
+                    isFavourite
+                    onToggle={toggleFavourite}
+                  />
+                ) : (
+                  <li
+                    key={id}
+                    className="flex items-center justify-between rounded-lg border border-dashed border-gray-300 p-3 text-gray-500 dark:border-gray-600 dark:text-gray-400"
+                  >
+                    <span>Loading or unavailable post ({id})</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleFavourite(id)}
+                      className="cursor-pointer rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100"
+                    >
+                      ★ Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      </main>
+    </div>
+  );
+};
