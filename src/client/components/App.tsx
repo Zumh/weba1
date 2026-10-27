@@ -70,4 +70,16 @@ export const App = () => {
             })
         );
     };
+
+    // Adding and removing favourites
+
+    const toggleFavourite = (id: string) => {
+        const next = favIds.includes(id)
+        ? favIds.filter((x) => x !== id)
+        : [...favIds, id];
+        setFavIds(next);
+        saveFavouriteIds(next);
+    };
+
+    const byId = new Map(favPosts.map((recentPost) => [recentPost.id, recentPost]));
 }
