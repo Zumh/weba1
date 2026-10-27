@@ -1,5 +1,5 @@
 ## Devvit React Starter
-- [Favourite posts link](https://www.reddit.com/r/favourite_posts_dev/?playtest=favourite-posts)
+### [Favourite posts link](https://www.reddit.com/r/favourite_posts_dev/?playtest=favourite-posts)
 A starter to build web applications on Reddit's developer platform
 
 - [Devvit](https://developers.reddit.com/): A way to build and deploy immersive games on Reddit
