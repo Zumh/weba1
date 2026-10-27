@@ -35,7 +35,7 @@ export const PostRow = ({ post, isFavourite, onToggle }: Props) => {
                     rel="noreferrer"
      
                     className="underline hover:text-gray-900 dark:hover:text-white"
-                    onClicke={(e) => {
+                    onClick={(e) => {
                         if (isDevvitMode()){
                             e.preventDefault();
                             navigateTo(url);

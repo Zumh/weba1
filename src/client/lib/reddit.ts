@@ -4,7 +4,7 @@ import type { Post, PostsResponse } from '../../shared/reddit';
 
 const SUBREDDIT = /^[A-Za-z0-9_]{2,21}$/;
 
-export const normalisSubreddit = (input: string): string | null => {
+export const normaliseSubreddit = (input: string): string | null => {
     const name = input.trim().replace(/^\/?r\//i, '');
     return SUBREDDIT.test(name) ? name : null;
 };

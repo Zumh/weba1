@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import type { SubmitEvent } from 'react' ;
 import type { Post } from '../../shared/reddit' ;
 import { fetchHotPosts, fetchPostsByIds, normaliseSubreddit } from '../lib/reddit' ;
-import type { loadFavouriteIds, saveFavouriteIds } from '../lib/storage' ;
-import type { PostRow } from './PostRow' ;
+import  { loadFavouriteIds, saveFavouriteIds } from '../lib/storage' ;
+import  { PostRow } from './PostRow' ;
 
 type Listing = 
 | { status: 'idle'}
@@ -34,7 +34,7 @@ export const App = () => {
             setFavPosts(posts);
             setFavError(null);
         })
-        .catch((err: unkown) => {
+        .catch((err: unknown) => {
             if(cancelled){
                 return;
             }
@@ -180,7 +180,7 @@ export const App = () => {
                       onClick={() => toggleFavourite(id)}
                       className="cursor-pointer rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100"
                     >
-                      ★ Remove
+                      X Remove
                     </button>
                   </li>
                 );

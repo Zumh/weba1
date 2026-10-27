@@ -17,7 +17,7 @@ export const loadFavouriteIds = (): string[] => {
             return memory;
         }
 
-        const parsed: uknown = JSON.parse(raw);
+        const parsed: unknown = JSON.parse(raw);
         return isStringArray(parsed) ? parsed : [];
 
     } catch {
