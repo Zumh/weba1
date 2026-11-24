@@ -14,8 +14,8 @@ export const commentsUrl = (permalink: string): string => `https://www.reddit.co
 type Mode = 'direct' | 'devvit';
 let mode: Mode = 'direct';
 
-// mode remembers wheter the direct call to Reddit works. 
-// it starts as 'direct' and flips to 'devvit' if the broswer blocks the request.
+// mode remembers whether the direct call to Reddit works. 
+// it starts as 'direct' and flips to 'devvit' if the browser blocks the request.
 export const isDevvitMode = (): boolean => mode === 'devvit';
 
 // check if data is object or null
@@ -170,7 +170,7 @@ export const fetchPostsByIds = async (ids: string[]): Promise<Post[]> => {
 
     return request(
         `https://www.reddit.com/api/info.json?id=${fullnames}&raw_json=1`,
-        `/api/hot?subreddit=${encodeURIComponent(ids.join(','))}`,
+        `/api/info?ids=${encodeURIComponent(ids.join(','))}`,
         parseListing    
     );
 };

@@ -1,5 +1,5 @@
 // Imports, types and state
-import { useEffect, useState } from "react";    
+import { useEffect, useRef, useState } from 'react';    
 import type { SubmitEvent } from 'react' ;
 import type { Post } from '../../shared/reddit' ;
 import { fetchHotPosts, fetchPostsByIds, normaliseSubreddit } from '../lib/reddit' ;
@@ -18,6 +18,7 @@ export const App = () => {
     const [favIds, setFavIds] = useState<string[]>(loadFavouriteIds);
     const [favPosts, setFavPosts] = useState<Post[]>([]);
     const [favError, setFavError] = useState<string | null>(null);
+    const searchId = useRef(0);
 
 
     // Loading favourites’ details
@@ -60,15 +61,22 @@ export const App = () => {
             return;
         }
 
+        const id = ++searchId.current;
         setListing({ status: 'loading', subreddit });
         fetchHotPosts(subreddit)
-        .then((posts) => setListing({ status: 'ready', subreddit, posts }))
-        .catch((err: unknown) =>
-            setListing({
+        .then((posts) => {
+            if (id === searchId.current) {
+                setListing({ status: 'ready', subreddit, posts });
+            }
+        })
+        .catch((err: unknown) => {
+            if (id === searchId.current) {
+                setListing({
                     status: 'error',
                     message: err instanceof Error ? err.message : 'Something went wrong',
-            })
-        );
+                });
+            }
+        });
     };
 
     // Adding and removing favourites

@@ -4,7 +4,7 @@ import type { Post, PostsResponse } from '../../shared/reddit';
 
 export const redditApi = new Hono();
 
-const SUBREDDIT = /^[A-Za-z0-9_]{2,21}/;
+const SUBREDDIT = /^[A-Za-z0-9_]{2,21}$/;
 const POST_ID = /^[a-z0-9]{1,10}$/;
 
 const stripPrefix = (id: string): string => id.replace(/^t3_/, '');

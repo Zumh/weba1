@@ -3,7 +3,7 @@ export type Post = {
     title: string;
     score: number;
     subreddit: string;
-    // Path such as /r/reactjs/comments/abc123/some_title/ */
+    // Path such as /r/reactjs/comments/abc123/some_title/
     permalink: string;
 };
 

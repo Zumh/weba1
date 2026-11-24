@@ -54,12 +54,12 @@ export const PostRow = ({ post, isFavourite, onToggle }: Props) => {
                 aria-pressed={isFavourite}
                 className={`shrink-0 cursor-pointer rounded-full px-3 py-1 text-sm transition-colors ${
                     isFavourite
-                    ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray 100 dark:hover:bg-gray-600'
+                    ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600'
                     : 'bg-[#d93900] text-white hover:bg-[#c23300] dark:bg-orange-600 dark:hover:bg-orange-700'
                 }`}
 
             >
-                {isFavourite ? 'X Remove' : 'X Favourite'}
+                {isFavourite ? '★ Remove' : '☆ Favourite'}
 
             </button>
         </li>
